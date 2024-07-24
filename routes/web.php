@@ -18,15 +18,15 @@ Route::get('/tasks', function() {
 
 Route::view('/tasks/create', 'create')->name('tasks.create');
 
-Route::get('/tasks/{id}/edit', function($id) {
+Route::get('/tasks/{task}/edit', function(Task $task) {
     return view('edit', [
-      'task'=> Task::findOrFail($id)
+      'task'=> $task
     ]);
 })-> name('tasks.show');
 
-Route::get('/tasks/{id}', function($id) {
+Route::get('/tasks/{task}', function(Task $task) {
     return view('show', [
-      'task'=> Task::findOrFail($id)
+      'task'=> $task
     ]);
 })-> name('tasks.show');
 
@@ -48,14 +48,13 @@ Route::post('/tasks', function(Request $request){
 
 })->name('tasks.store');
 
-Route::put('/tasks/{id}', function($id, Request $request){
+Route::put('/tasks/{task}', function(Task $task, Request $request){
     $data = $request->validate([
         'title' => 'required|max:255',
         'description' => 'required',
         'long_description' => 'required'
     ]);
   
-    $task = Task::findOrFail($id);
     $task->title = $data['title'];
     $task->description = $data['description'];
     $task->long_description = $data['long_description'];
