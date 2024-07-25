@@ -13,7 +13,7 @@ Route::get('/', function(){
 
 Route::get('/tasks', function() {
     return view('index', [
-        'tasks' => Task::latest()->where('completed', false)->get()
+        'tasks' => Task::latest()->paginate(10)
     ]);
 })-> name('tasks.index');
 
@@ -55,23 +55,9 @@ Route::delete('/tasks/{task}', function(Task $task) {
 
     return redirect()->route('tasks.index')
     ->with('success', 'Task deleted successfully');
-    
+
 })-> name('tasks.destroy');
 
 Route::fallback( function(){
     return 'Still got somewhere!';
 });
-
-
-
-// Route::get('/hello', function(){
-//     return 'Hello';
-// })-> name('hello');
-
-// Route::get('/hi', function(){
-//     return redirect()-> route('hello');
-// });
-
-// Route::get('/greet/{name}', function($name){
-//     return 'Hello '. $name . ' !';
-//});
