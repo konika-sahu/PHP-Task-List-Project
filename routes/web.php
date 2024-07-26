@@ -23,7 +23,7 @@ Route::get('/tasks/{task}/edit', function(Task $task) {
     return view('edit', [
       'task'=> $task
     ]);
-})-> name('tasks.show');
+})-> name('tasks.edit');
 
 Route::get('/tasks/{task}', function(Task $task) {
     return view('show', [
@@ -44,7 +44,6 @@ Route::put('/tasks/{task}', function(Task $task, TaskRequest $request){
 
     $task->update($request->validated());
 
-  
     return redirect()->route('tasks.show', ['task' => $task->id])
     ->with('success', 'Task updated successfully!');
   
@@ -57,6 +56,12 @@ Route::delete('/tasks/{task}', function(Task $task) {
     ->with('success', 'Task deleted successfully');
 
 })-> name('tasks.destroy');
+
+Route::put('tasks/{task}/toggle-complete', function(Task $task){
+    $task->toggleComplete();
+
+    return redirect()->back()->with('success', 'Task completed successfully! ');
+})-> name('tasks.toggle-complete');
 
 Route::fallback( function(){
     return 'Still got somewhere!';
